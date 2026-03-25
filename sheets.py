@@ -1,3 +1,4 @@
+import os
 import os.path
 
 from google.auth.transport.requests import Request
@@ -7,11 +8,6 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"]
-
-SHEET_ID = "1K4Os4DP4WWF_PsGPcbbIQDMP3tCLl1PhdGBaN4sgwGc"
-RANGE = "Sheet1!C2:E"
-
-ERROR_CHANNEL = "938127502327570433"
 
 def get_data():
     creds = get_credentials()
@@ -26,7 +22,7 @@ def get_data():
         sheet = service.spreadsheets()
         result = (
             sheet.values()
-            .get(spreadsheetId=SHEET_ID, range=RANGE)
+            .get(spreadsheetId=os.getenv("SHEET_ID"), range=os.getenv("RANGE"))
             .execute()
         )
         values = result.get("values", [])
